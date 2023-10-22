@@ -1,0 +1,701 @@
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yan's Consulting</title>
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="favicon.ico" >
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/toasts/toasts.css">
+  <script src="./assets/toasts/toasts.js" defer></script>
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- 
+    - preload images
+  -->
+  <link rel="preload" as="image" href="./assets/images/hero-banner.png">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+  <script>
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const button = document.querySelector(".submit-button");
+
+    button.addEventListener("click", function () {
+      const toasts = new Toasts();
+
+        const name = document.querySelector('input[name="name"]').value;
+        const firstname = document.querySelector('input[name="firstname"]').value;
+        const email = document.querySelector('input[name="email"]').value;
+        const phone = document.querySelector('input[name="phone"]').value;
+        const message = document.querySelector('textarea[name="message"]').value;
+
+
+
+        if(name==""||firstname==""||email==""||phone==""||message==""){
+          toasts.push({
+    title: '',
+    closeButton:false,
+    content: 'Tous les champs sont obligatoires',
+    style: 'dark',
+    dismissAfter: '3s'
+});
+          return;
+        }
+
+      
+
+        $.ajax({
+    url : "<?php echo base_url('messagerie/create'); ?>",
+    type: "POST",
+    cache: false,
+    data:{name:name,firstname:firstname,email:email,phone:phone,message:message},
+
+    success:function(result){
+
+
+      if(result.toString()=="1"){
+
+  document.querySelector('input[name="name"]').value="";
+ document.querySelector('input[name="firstname"]').value="";
+document.querySelector('input[name="email"]').value="";
+document.querySelector('input[name="phone"]').value="";
+ document.querySelector('textarea[name="message"]').value="";
+
+
+        toasts.push({
+    title: '',
+    closeButton:false,
+    content: 'Message envoyé avec succés',
+    style: 'success',
+    dismissAfter: '3s'
+});
+
+
+
+      }else{
+        toasts.push({
+    title: '',
+    closeButton:false,
+    content: 'Erreur',
+    style: 'dark',
+    dismissAfter: '3s'
+});
+      }
+  
+    
+ 
+
+       
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+    alert(errorThrown); 
+},
+
+  });
+
+
+    });
+});
+
+
+
+
+    // // When the user scrolls the page, execute myFunction 
+    // window.onscroll = function() {myFunction()};
+    
+    // function myFunction() {
+    //   var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    //   var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    //   var scrolled = (winScroll / height) * 100;
+    //   document.getElementById("myBar").style.width = scrolled + "%";
+    // }
+
+
+ 
+    
+    // Function to update the active section indicator dot
+function updateActiveSection() {
+    const sections = document.querySelectorAll('.section');
+    const indicatorDots = document.querySelectorAll('.dot');
+    const scrollPosition = window.scrollY;
+
+    sections.forEach((section, index) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        const dot = indicatorDots[index];
+
+
+
+
+
+
+
+
+        if (scrollPosition  >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            dot.classList.add('active-dot');
+        } else {
+            dot.classList.remove('active-dot');
+        }
+
+
+        dot.addEventListener('click', function() {
+
+
+          
+  let position = section.getBoundingClientRect();
+  // scrolls to 20px above element
+
+          //  section.scrollIntoView({ behavior: 'smooth' ,block:'start' });
+           window.scrollTo(position.left, position.top + window.scrollY + ((index==0)? 0: (index==3)? 0 : 45));
+
+
+
+});
+
+
+    });
+}
+
+// Add a scroll listener
+window.addEventListener('scroll', updateActiveSection);
+
+// Initial call to set the active section on page load
+updateActiveSection();
+
+
+
+    </script>
+
+
+</head>
+
+<body id="top">
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <div class="section-indicator">
+    <div class="dot" id="scrollButton1" data-section="home"></div>
+    <div class="dot" id="scrollButton2"  data-section="service"></div>
+    <div class="dot" id="scrollButton3"  data-section="feature"></div>
+    <div class="dot" id="scrollButton4"  data-section="contact"></div>
+</div>
+
+
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <a href="#">
+        <img src="./assets/images/logo.png" width="200" height="60" loading="lazy" alt="Yan's Consulting">
+    </a>
+      
+
+      <nav class="navbar" data-navbar>
+
+        <div class="wrapper">
+          <a href="#" class="logo">Yan's Consulting</a>
+
+          <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+            <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+          </button>
+        </div>
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <a href="#home" class="navbar-link" data-nav-link>Accueil</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="#service" class="navbar-link" data-nav-link>Services</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="#feature" class="navbar-link" data-nav-link>Notre marque</a>
+          </li>
+
+          <li class="navbar-item mobile-only contact-item">
+            <a href="#contact" class="navbar-link" data-nav-link>Nous contacter</a>
+          </li>
+
+
+
+        </ul>
+        <!-- <div class="progress-container">
+          <div class="progress-bar" id="myBar"></div>
+        </div>  -->
+      </nav>
+
+      <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
+        <ion-icon name="menu-outline" aria-hidden="true"></ion-icon>
+      </button>
+
+        <a href="#contact" class="btn btn-primary has-before has-after">Nous contacter</a>
+
+      <div class="overlay" data-nav-toggler data-overlay></div>
+
+    </div>
+  </header>
+
+
+
+
+
+  <main>
+    <article>
+
+      <!-- 
+        - #HERO
+      -->
+
+      <section class="section hero" id="home" aria-label="hero">
+        <div class="container">
+
+          <div class="hero-content">
+
+            <h1 class="h1 hero-title">
+              Votre <span class="has-before">Succés</span>, Notre Expertise.
+            </h1>
+
+            <p class="hero-text">
+              Yan's Consulting, le cabinet de conseil particulièrement astucieux,
+
+              vous assiste dans la réalisation de vos projets de transformation IT & Data afin de répondre efficacement à vos besoins métier.
+              
+              Pour dynamiser votre entreprise, notre expérience combinée dans le domaine métier, informatique et méthodologique fait de Yan's Consulting le partenaire parfait pour la réussite de vos initiatives de valorisation des données.
+            </p>
+
+            <!-- <div class="wrapper">
+              <a href="#" class="btn btn-primary has-before has-after">How It Works</a>
+
+              <button class="hero-btn" aria-label="Yan's Consulting">
+                <ion-icon name="play-outline" aria-hidden="true"></ion-icon>
+
+                <span class="span">Behind the scenes</span>
+              </button>
+            </div>
+
+            <ul class="social-list">
+
+              <li>
+                <a href="#" class="social-link" style="--color: hsl(241, 77%, 63%);">
+                  <ion-icon name="logo-facebook"></ion-icon>
+
+                  <span class="span">Facebook</span>
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="social-link" style="--color: hsl(0, 100%, 50%);">
+                  <ion-icon name="logo-youtube"></ion-icon>
+
+                  <span class="span">Youtube</span>
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="social-link" style="--color: hsl(203, 89%, 53%);">
+                  <ion-icon name="logo-twitter"></ion-icon>
+
+                  <span class="span">Twitter</span>
+                </a>
+              </li>
+
+            </ul> -->
+
+          </div>
+
+          <figure class="hero-banner">
+            <img src="./assets/images/hero-banner.png" width="794" height="637" alt="hero banner" class="w-100">
+          </figure>
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #SERVICE
+      -->
+
+      <section class="section service" id="service" aria-label="service">
+        <div class="container">
+
+          <p class="section-subtitle has-before text-center">Nos Services</p>
+
+          <h2 class="h2 section-title text-center">Gérer votre  <span class="has-before">entreprise</span> avec nos meilleurs services."</h2>
+
+          <ul class="grid-list">
+
+            <li>
+              <div class="service-card" style="--color: 174, 77%, 50%">
+
+                <div class="card-icon">
+                  <img src="./assets/images/service-icon-1.png" width="30" height="30" loading="lazy"
+                    alt="service icon">
+                </div>
+
+                <h3 class="h3">
+                  <a href="#" class="card-title">Lorem Ipsum</a>
+                </h3>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card" style="--color: 267, 76%, 57%">
+
+                <div class="card-icon">
+                  <img src="./assets/images/service-icon-2.png" width="30" height="30" loading="lazy"
+                    alt="service icon">
+                </div>
+
+                <h3 class="h3">
+                  <a href="#" class="card-title">Développement Web et Mobile</a>
+                </h3>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card" style="--color: 17, 100%, 68%">
+
+                <div class="card-icon">
+                  <img src="./assets/images/service-icon-3.png" width="30" height="30" loading="lazy"
+                    alt="service icon">
+                </div>
+
+                <h3 class="h3">
+                  <a href="#" class="card-title">Service Client</a>
+                </h3>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card" style="--color: 343, 98%, 60%">
+
+                <div class="card-icon">
+                  <img src="./assets/images/service-icon-4.png" width="30" height="30" loading="lazy"
+                    alt="service icon">
+                </div>
+
+                <h3 class="h3">
+                  <a href="#" class="card-title">Ressources Humaines</a>
+                </h3>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card" style="--color: 210, 100%, 53%">
+
+                <div class="card-icon">
+                  <img src="./assets/images/service-icon-5.png" width="30" height="30" loading="lazy"
+                    alt="service icon">
+                </div>
+
+                <h3 class="h3">
+                  <a href="#" class="card-title">Conception & Implementation</a>
+                </h3>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card" style="--color: 210, 100%, 53%">
+
+                <div class="card-icon">
+                  <img src="./assets/images/service-icon-5.png" width="30" height="30" loading="lazy"
+                    alt="service icon">
+                </div>
+
+                <h3 class="h3">
+                  <a href="#" class="card-title">Design</a>
+                </h3>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card" style="--color: 157, 89%, 44%">
+
+                <div class="card-icon">
+                  <img src="./assets/images/service-icon-6.png" width="30" height="30" loading="lazy"
+                    alt="service icon">
+                </div>
+
+                <h3 class="h3">
+                  <a href="#" class="card-title">Marketing</a>
+                </h3>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card" style="--color: 52, 98%, 50%">
+
+                <div class="card-icon">
+                  <img src="./assets/images/service-icon-7.png" width="30" height="30" loading="lazy"
+                    alt="service icon">
+                </div>
+
+                <h3 class="h3">
+                  <a href="#" class="card-title">Lorem Ipsum</a>
+                </h3>
+
+              </div>
+            </li>
+
+           
+
+          </ul>
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #FEATURE
+      -->
+
+      <section class="section feature" id="feature" aria-label="feature">
+        <div class="container">
+
+          <figure class="feature-banner">
+            <img src="./assets/images/feature-banner.png" width="582" height="585" loading="lazy" alt="feature banner"
+              class="w-100">
+          </figure>
+
+          <div class="feature-content">
+
+            <p  class="section-subtitle has-before">Pourquoi nous choisir</p>
+
+            <h2 class="h2 section-title">
+              Optez pour notre entreprise de conseil en IT pour une transformation numérique innovante et des solutions sur <span class="has-before">mesure</span>.
+            </h2>
+
+            <ul class="feature-list">
+
+              <li>
+                <div class="feature-card">
+
+                  <div class="card-icon" style="--color: 174, 77%, 50%">
+                    <ion-icon name="rocket-sharp" aria-hidden="true"></ion-icon>
+                  </div>
+
+                  <div>
+                    <h3 class="h3 card-title">Processus de travail rapide</h3>
+
+                    <p class="card-text">
+                      Chez Yan's Consulting, notre processus de travail rapide et efficace garantit une progression continue vers vos objectifs IT.
+                    </p>
+                  </div>
+
+                </div>
+              </li>
+
+              <li>
+                <div class="feature-card">
+
+                  <div class="card-icon" style="--color: 241, 77%, 63%;">
+                    <ion-icon name="people-sharp" aria-hidden="true"></ion-icon>
+                  </div>
+
+                  <div>
+                    <h3 class="h3 card-title">Equipe dédiée</h3>
+
+                    <p class="card-text">
+                      Notre équipe dédiée est votre partenaire inébranlable pour la réussite de votre projet                    </p>
+                  </div>
+
+                </div>
+              </li>
+
+              <li>
+                <div class="feature-card">
+
+                  <div class="card-icon" style="--color: 343, 98%, 60%;">
+                    <ion-icon name="headset-sharp" aria-hidden="true"></ion-icon>
+                  </div>
+
+                  <div>
+                    <h3 class="h3 card-title">Support 24/7</h3>
+
+                    <p class="card-text">
+                      Support ininterrompu pour répondre à vos besoins à tout moment.                    </p>
+                  </div>
+
+                </div>
+              </li>
+
+            </ul>
+
+          </div>
+
+        </div>
+      </section>
+
+
+
+
+
+
+
+      <!-- 
+        - #NEWSLETTER
+      -->
+
+      <section class="section newsletter has-bg-image" id="contact" aria-label="newsletter" style="background-image: url('./assets/images/newsletter-bg.jpg')">
+    <div class="container">
+
+      <div class="newsletter-content">
+        <p class="section-subtitle has-before">Nous Contacter</p>
+        <h2 class="h2 section-title">Utilisez le formulaire pour nous contacter. Nous sommes là pour vous.</h2>
+    </div>
+       
+
+
+  
+
+      <div class="my-form"  >
+        <div class="form-row">
+          
+            <input type="text" name="name" placeholder="Nom *" required class="email-field">
+            <input type="text" name="firstname" placeholder="Prénom *" required class="email-field">
+        </div>
+
+        <div class="form-row">
+            <input type="text" name="email" placeholder="E-mail *" required class="email-field">
+            <input type="text" name="phone" placeholder="Téléphone *" required class="email-field">
+        </div>
+
+        <div class="form-row">
+            <textarea name="message" placeholder="Votre message *" rows="8" required class="email-field"></textarea>
+        </div>
+
+
+
+        <!-- Submit Button -->
+        <div class="form-row">
+          <button class="submit-button">
+            <span class="span">Envoyer</span>
+          </button>
+        </div>
+
+   
+
+
+
+       
+    </div>
+
+
+    
+</section>
+
+
+
+
+
+    </article>
+  </main>
+
+
+
+
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer">
+    <div class="container">
+
+     
+
+      <div class="footer-bottom">
+
+        <p class="copyright">
+          &copy; 2023 Yan's Consulting. Tous droits résérvés. 
+        </p>
+
+        <ul class="footer-bottom-list">
+
+          <li>
+            <a href="#" class="footer-bottom-link">Termes et conditions</a>
+          </li>
+
+          <li>
+            <a href="#" class="footer-bottom-link">Mentions légales</a>
+          </li>
+
+       
+        </ul>
+
+      </div>
+
+    </div>
+
+    
+
+
+  </footer>
+
+
+
+
+
+  <!-- 
+    - #BACK TO TOP
+  -->
+
+  <a href="#top" class="back-top-btn has-after active" aria-label="back to top" data-back-top-btn>
+    <ion-icon name="arrow-up" aria-hidden="true"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="./assets/js/script.js" defer></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>
